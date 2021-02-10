@@ -3,6 +3,9 @@
 ## Features / Pages
 
 - Sign in 
+ username: rushan.edirisuriya@gmail.com
+ password: 0p3nadM!
+
 - Home Page
 - News Page
 
