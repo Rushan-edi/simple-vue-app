@@ -3,7 +3,7 @@
     <v-app-bar class="white" flat app clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="font-weight-bold"
-        ><router-link to="/" class="black--text" style="text-decoration: none"
+        ><router-link to="/home" class="black--text" style="text-decoration: none"
           >Dashbaord</router-link
         ></v-toolbar-title
       >
@@ -16,7 +16,7 @@
         outlined
         dense
         v-model="searchText"
-        @click:append="search"
+        v-on:keyup="pushSearch(searchText)"
         class="hidden-sm-and-down"
       ></v-text-field>
 
@@ -144,17 +144,15 @@ export default {
           this.$router.push({ name: 'SignIn' })
       })
     },
-    search() {
-      if (!this.searchText) return
-      this.$router.push({
-        name: 'Search',
-        query: { 'search-query': this.searchText }
-      })
+    pushSearch: function(value) {
+      let params = "";
+      params += "&name=" + value;
+      this.$router.push("/news?" + params).catch(() => {});
     }
   },
   mounted() {
     this.drawer = this.$vuetify.breakpoint.mdAndDown ? false : true
-    this.drawer = this.$route.name === 'Watch' ? false : this.drawer
+    this.drawer = true
   }
 }
 </script>

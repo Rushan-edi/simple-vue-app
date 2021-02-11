@@ -5,11 +5,6 @@ export default () => {
     baseURL: `https://raw.githubusercontent.com/shandhiviyarajan/covid-19-sl-data/master`
   })
 
-  const token = localStorage.getItem('token')
-  if (token) {
-    axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`
-  }
-
   axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {

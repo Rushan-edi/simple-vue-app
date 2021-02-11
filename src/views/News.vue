@@ -97,18 +97,44 @@ import NewsService from '@/services/NewsService'
 
 export default {
   name: 'News',
+  components: {
+    InfiniteLoading
+  },
   data: () => ({
     loading: false,
     loaded: false,
     errored: false,
     news: [],
-    page: 1
+    page: 1,
+    searchName: ""
   }),
   computed: {
     ...mapGetters(['currentUser', 'getUrl', 'isAuthenticated'])
   },
+  watch: { 
+  '$route.query.name': {
+      handler: function(search) {
+        this.getDataById(search)
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   methods: {
-    async getNews($state) {
+    getDataById: function(value) {
+      if (value) {
+        let newsArray = [];
+        newsArray = this.news.filter(item => {
+          return item.title.toLowerCase().includes(value.toLowerCase())
+        });
+        this.news = newsArray;
+      } else {
+        this.getNews();
+      }
+    },
+    async getNews() {
+
+      this.news = [];
       if (!this.loaded) {
         this.loading = true
       }
@@ -124,19 +150,13 @@ export default {
         })
 
       if (typeof news === 'undefined') return
-     console.log(news.data.length);
+
       if (news.data.length) {
         this.page += 1
         this.news.push(...news.data)
-        $state.loaded()
         this.loaded = true
-      } else {
-        $state.complete()
       }
     }
-  },
-  components: {
-    InfiniteLoading
   }
 }
 </script>
